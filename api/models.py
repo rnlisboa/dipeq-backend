@@ -23,6 +23,11 @@ class CompanyModel(models.Model):
     linkedin = models.CharField(max_length=50,null=True)
     email = models.CharField(max_length=50,null=True)
 
+class InvoicingModel(models.Model):
+    company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
+    date = models.DateTimeField()
+    value = models.DecimalField(max_digits=9, decimal_places=2)
+    
 class PartnerModel(models.Model):
     nome = models.CharField(max_length=120)
     empresa = models.ForeignKey(CompanyModel, on_delete=models.SET_NULL, null=True)
