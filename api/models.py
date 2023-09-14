@@ -8,7 +8,7 @@ class CompanyModel(models.Model):
     cpnj = models.CharField(max_length=50,)
     razao_social = models.CharField(max_length=100)
     nome_fantasia = models.CharField(max_length=100)
-    area_de_atuacao = models.CharField(max_length=50,)
+    area_de_atuacao = models.CharField(max_length=50)
     tempo_atuacao_mercado = models.IntegerField()
     capital_social = models.DecimalField(max_digits=9, decimal_places=2)
     n_func_clt = models.IntegerField()
