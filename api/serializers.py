@@ -12,3 +12,9 @@ class CompanySerializer(serializers.ModelSerializer):
     class Meta:
         model = CompanyModel
         fields = '__all__'
+
+class PartnerSerializer(serializers.ModelSerializer):
+    company = CompanySerializer
+    class Meta:
+        model = PartnerModel
+        fields = '__all__'

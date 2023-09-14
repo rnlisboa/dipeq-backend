@@ -42,14 +42,85 @@ class UserViewSet(viewsets.ModelViewSet):
                 return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'errors': serializer.errors, 'message': 'Houveram erros de validação'}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = CompanyModel.objects.all()
     serializer_class = CompanySerializer
 
     @action(methods=['POST'], detail=False)
     def create_company(self, *args, **kwargs):
-        pass
+        req = self.request.data
+        cpnj = req.get("cpnj")
+        razao_social = req.get("razao_social")
+        nome_fantasia = req.get("nome_fantasia")
+        area_de_atuacao = req.get("area_de_atuacao")
+        tempo_atuacao_mercado = req.get("tempo_atuacao_mercado")
+        capital_social = req.get("capital_social")
+        n_func_clt = req.get("n_func_clt")
+        n_func_terc = req.get("n_func_terc")
+        n_estagiario = req.get("n_estagiario")
+        n_socios = req.get("n_socios")
+        razao_social = req.get("razao_social")
+        website = req.get("website")
+        instagram = req.get("instagram")
+        facebook = req.get("facebook")
+        twitter = req.get("twitter")
+        linkedin = req.get("linkedin")
+        email = req.get("email")
+
+        if not (cpnj or razao_social or nome_fantasia or nome_fantasia or area_de_atuacao or tempo_atuacao_mercado or capital_social or n_func_clt or n_func_terc or n_socios or razao_social):
+            return Response({'detail': 'Campos marcados são obrigatórios.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = CompanySerializer(data=req)
+
+        if serializer.is_valid():
+            try:
+                company = CompanyModel(
+                    req = self.request.data
+                    cpnj = cpnj
+                    razao_social = razao_social
+                    nome_fantasia = nome_fantasia
+                    area_de_atuacao = area_de_atuacao
+                    tempo_atuacao_mercado = tempo_atuacao_mercado
+                    capital_social = capital_social
+                    n_func_clt = n_func_clt
+                    n_func_terc = n_func_terc
+                    n_estagiario = n_estagiario
+                    n_socios = n_socios
+                    razao_social = razao_social
+                    website = website
+                    instagram = instagram
+                    facebook = facebook
+                    twitter = twitter
+                    linkedin = linkedin
+                    email = email
+                )
+                user.set_password(password)
+                user.save()
+                return Response({'message': 'Empresa cadastrada!'}, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'errors': serializer.errors, 'message': 'Houveram erros de validação'}, status=status.HTTP_400_BAD_REQUEST)
     
+    @action(methods=['POST'], detail=False)
+    def add_partner_to_company(self, *args, **kwargs):
+        req = self.request.data 
+        parters = req['parters']
+        company_id = req['company_id']
+        serializer = PartnerSerializer(data=req)
+        # if serializer.is_valid():
+        #     try:
+        #         partner = PartnerModel(
+                    
+        #         )
+        #         user.set_password(password)
+        #         user.save()
+        #         return Response({'message': 'Sócio cadastrado!'}, status=status.HTTP_201_CREATED)
+        #     except Exception as e:
+        #         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'errors': serializer.errors, 'message': 'Houveram erros de validação'}, status=status.HTTP_400_BAD_REQUEST)
+
+
     @action(methods=['GET'], detail=False)
     def get_invoicing(self, *args, **kwargs):
         pass
