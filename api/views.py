@@ -46,4 +46,14 @@ class CompanyViewSet(viewsets.ModelViewSet):
     queryset = CompanyModel.objects.all()
     serializer_class = CompanySerializer
 
-    @action(metho)
+    @action(methods=['POST'], detail=False)
+    def create_company(self, *args, **kwargs):
+        pass
+    
+    @action(methods=['GET'], detail=False)
+    def get_invoicing(self, *args, **kwargs):
+        pass
+
+    @action(methods=['GET'], detail=False)
+    def get_quarterly_billing(self, *args, **kwargs):
+        pass
