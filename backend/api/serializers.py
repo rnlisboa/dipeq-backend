@@ -8,13 +8,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CompanySerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = CompanyModel
         fields = '__all__'
 
-class PartnerSerializer(serializers.ModelSerializer):
-    company = CompanySerializer
+class InvoicingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PartnerModel
+        model = InvoicingModel
         fields = '__all__'
