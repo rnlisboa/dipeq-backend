@@ -139,15 +139,11 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
         try:
             invoicings = InvoicingModel.objects.filter(company=company_id).order_by('-date')
-
-            # Use defaultdict para criar um dicionário com valores padrão de 0.0
             datas = defaultdict(lambda: {"value": 0.0})
 
             for inv in invoicings:
                 data = str(inv.date)[0:7]
-                datas[data]["value"] += inv.value
-
-            # Converter o defaultdict em um dicionário padrão do Python
+                datas[data]["value"] += inv.valu
             resultado = dict(datas)
 
             serializer = InvoicingSerializer(invoicings, many=True)
