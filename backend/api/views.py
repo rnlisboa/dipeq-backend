@@ -143,7 +143,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
             for inv in invoicings:
                 data = str(inv.date)[0:7]
-                datas[data]["value"] += inv.valu
+                datas[data]["value"] += inv.value
             resultado = dict(datas)
 
             serializer = InvoicingSerializer(invoicings, many=True)
