@@ -1,35 +1,38 @@
-import openpyxl
-from datetime import datetime, timedelta
-import random
+dados = {
+    "2021-05-18": {
+        "valor": 351516.93,
+        "compania": "Minha Empresa"
+    },
+    "2022-07-17": {
+        "valor": 334408.22,
+        "compania": "Minha Empresa"
+    },
+    "2022-01-01": {
+        "valor": 705911.26,
+        "compania": "Minha Empresa"
+    },
+    "2021-08-10": {
+        "valor": 800131.85,
+        "compania": "Minha Empresa"
+    },
+    "2021-08-18": {
+        "valor": 592300.39,
+        "compania": "Minha Empresa"
+    },
+    "2022-05-08": {
+        "valor": 465725.27,
+        "compania": "Minha Empresa"
+    },
+    "2021-09-27": {
+        "valor": 104964.61,
+        "compania": "Minha Empresa"
+    },
+    "2022-08-23": {
+        "valor": 985036.76,
+        "compania": "Minha Empresa"
+    },
+}
 
-# Solicite ao usuário o intervalo de valores e datas
-valor_inicial = float(input("Informe o valor inicial: "))
-valor_final = float(input("Informe o valor final: "))
-data_inicial_str = input("Informe a data inicial (formato dd/mm/yyyy): ")
-data_final_str = input("Informe a data final (formato dd/mm/yyyy): ")
+dados_filtrados = {chave: valor for chave, valor in dados.items() if chave.startswith("2022")}
 
-# Converta as datas de string para objetos de data
-data_inicial = datetime.strptime(data_inicial_str, "%d/%m/%Y")
-data_final = datetime.strptime(data_final_str, "%d/%m/%Y")
-
-# Crie um novo arquivo XLSX
-workbook = openpyxl.Workbook()
-sheet = workbook.active
-
-# Defina os cabeçalhos
-sheet["A1"] = "Valor"
-sheet["B1"] = "Data"
-
-# Preencha os valores e datas no intervalo especificado
-linha = 2
-while data_inicial <= data_final:
-    sheet[f"A{linha}"] = random.uniform(valor_inicial, valor_final)
-    sheet[f"B{linha}"] = data_inicial.strftime("%d/%m/%Y")
-    
-    data_inicial += timedelta(days=1)
-    linha += 1
-
-# Salve o arquivo XLSX
-workbook.save("dados3.xlsx")
-
-print("Arquivo XLSX criado com sucesso.")
+print(dados_filtrados)

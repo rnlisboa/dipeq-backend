@@ -6,8 +6,9 @@ from django.db.models                           import Q
 from .serializers                               import *
 from .models                                    import *
 from django.utils import timezone
-from django.db.models import Sum, F
+from django.db.models import Sum, F, ExpressionWrapper, DateTimeField
 from django.db.models.functions import ExtractYear, ExtractMonth, TruncMonth
+from datetime import datetime
 from collections import defaultdict
 # Create your views here.
 
@@ -109,11 +110,31 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
     @action(methods=['GET'], detail=False)
     def get_invoicing_per_year(self, *args, **kwargs):
-        pass
+        company_id = self.request.query_params.get('company_id', None)
+
+        try:
+            invoicings = InvoicingModel.objects.filter(company__id=company_id)
+            company = self.queryset.get(pk=company_id)
+            dados_por_ano = {}
+
+            for dado in invoicings:
+                data = str(dado.date)[:4]
+                if data not in dados_por_ano:
+                    dados_por_ano[data] = []
+                dados_por_ano[data].append({
+                    'id': dado.id,
+                    'date': dado.date,
+                    'value': dado.value,
+                    'company': company.nome_fantasia,
+                })
+            return Response(data=dados_por_ano, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Dados não encontrados.'}, status=status.HTTP_404_NOT_FOUND)
 
         
         
 
     @action(methods=['GET'], detail=False)
     def get_quarterly_billing(self, *args, **kwargs):
-        pass
+        company_id = self.request.query_params.get('company_id', None)
