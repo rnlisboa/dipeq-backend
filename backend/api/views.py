@@ -109,7 +109,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 
     @action(methods=['GET'], detail=False)
-    def get_invoicing_per_year(self, *args, **kwargs):
+    def get_sum_invoicing_per_year(self, *args, **kwargs):
         company_id = self.request.query_params.get('company_id', None)
 
         try:
@@ -136,6 +136,28 @@ class CompanyViewSet(viewsets.ModelViewSet):
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'Dados não encontrados.'}, status=status.HTTP_404_NOT_FOUND)
 
+    @action(methods=['GET'], detail=False)
+    def get_invoicing_per_year(self, *args, **kwargs):
+        company_id = self.request.query_params.get('company_id', None)
+        ano = self.request.query_params.get('ano', None)
+        try:
+            invoicings = InvoicingModel.objects.filter(company__id=company_id)
+            dados_por_ano = {}
+
+            for dado in invoicings:
+                data = str(dado.date)[:4]
+                if data not in dados_por_ano:
+                    dados_por_ano[data] = []
+                dados_por_ano[data].append({
+                    'id': dado.id,
+                    'date': dado.date,
+                    'value': dado.value
+                })
+            
+            return Response(data=dados_por_ano[ano], status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Dados não encontrados.'}, status=status.HTTP_404_NOT_FOUND)
         
         
 
@@ -170,7 +192,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
             soma_mes = {}
             for i in por_mes:
                 soma = reduce(lambda acumulador, valores: valores['value'] + acumulador, por_mes[i], 0)
-                soma_mes['ano_'+i] = {
+                soma_mes['ano_'+i.replace('-','_')] = {
                     "valor_somado": soma
                 } 
             return Response(data=soma_mes, status=status.HTTP_200_OK)
