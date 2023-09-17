@@ -109,52 +109,11 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
     @action(methods=['GET'], detail=False)
     def get_invoicing_per_year(self, *args, **kwargs):
-        company_id = self.request.query_params.get('company_id', None)
-
-        if not company_id:
-            return Response(data="Erro ao buscar empresa", status=status.HTTP_400_BAD_REQUEST)
-
-        try:  
-             
-            invoicings = InvoicingModel.objects.filter(company=company_id).order_by('-date')
-            results = invoicings.annotate(ano=ExtractYear('date')).values('ano').annotate(soma=Sum('value'))
-            dados = {f"{str({result['ano']})}": result['soma'] for result in results}
-            serializer = InvoicingSerializer(invoicings, many=True)
-            return Response(data=dados, status=status.HTTP_200_OK)
-            
-        except Exception as e:
-            return Response(data={
-                "error": str(e)  
-            }, status=status.HTTP_400_BAD_REQUEST)
+        pass
 
         
         
 
     @action(methods=['GET'], detail=False)
     def get_quarterly_billing(self, *args, **kwargs):
-        company_id = self.request.query_params.get('company_id', None)
-
-        if not company_id:
-            return Response(data="Erro ao buscar empresa", status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            invoicings = InvoicingModel.objects.filter(company=company_id).order_by('-date')
-
-            # Use defaultdict para criar um dicionário com valores padrão de 0.0
-            datas = defaultdict(lambda: {"value": 0.0})
-
-            for inv in invoicings:
-                data = str(inv.date)[0:7]
-                datas[data]["value"] += inv.value
-
-            # Converter o defaultdict em um dicionário padrão do Python
-            resultado = dict(datas)
-
-            serializer = InvoicingSerializer(invoicings, many=True)
-            return Response(data=resultado, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            return Response(data={
-                "message": "Empresa não encontrada ou erro na consulta.",
-                "error": str(e)
-            }, status=status.HTTP_400_BAD_REQUEST)
+        pass

@@ -24,8 +24,14 @@ class CompanyModel(models.Model):
     linkedin = models.CharField(max_length=50,null=True)
     email = models.EmailField(max_length=50,null=True)
 
+    def __str__(self):
+        return self.nome_fantasia
+
+
 class InvoicingModel(models.Model):
     company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
     date = models.DateTimeField()
     value = models.FloatField()
+
+    
     
