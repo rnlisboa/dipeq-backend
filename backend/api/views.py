@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.db.models import Sum, F, ExpressionWrapper, DateTimeField
 from django.db.models.functions import ExtractYear, ExtractMonth, TruncMonth
 from datetime import datetime
-from collections import defaultdict
+from functools import reduce
 # Create your views here.
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -114,7 +114,6 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
         try:
             invoicings = InvoicingModel.objects.filter(company__id=company_id)
-            company = self.queryset.get(pk=company_id)
             dados_por_ano = {}
 
             for dado in invoicings:
@@ -127,7 +126,13 @@ class CompanyViewSet(viewsets.ModelViewSet):
                     'value': dado.value,
                     'company': company.nome_fantasia,
                 })
-            return Response(data=dados_por_ano, status=status.HTTP_200_OK)
+            soma_ano = {}
+            for i in dados_por_ano:
+                soma = reduce(lambda acumulador, valores: valores['value'] + acumulador, dados_por_ano[i], 0)
+                soma_ano['ano_'+i] = {
+                    "valor_somado": soma
+                }
+            return Response(data=soma_ano, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'Dados não encontrados.'}, status=status.HTTP_404_NOT_FOUND)
