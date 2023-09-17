@@ -139,7 +139,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
         company_id = self.request.query_params.get('company_id', None)
         ano = self.request.query_params.get('ano', None)
         try:
-            invoicings = InvoicingModel.objects.filter(company__id=company_id)
+            invoicings = InvoicingModel.objects.filter(company__id=company_id).order_by('date')
             dados_por_ano = {}
 
             for dado in invoicings:
