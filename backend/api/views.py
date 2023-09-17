@@ -6,9 +6,8 @@ from django.db.models                           import Q
 from .serializers                               import *
 from .models                                    import *
 from django.utils import timezone
-from django.db.models import Sum, F
-from django.db.models.functions import ExtractYear, ExtractMonth, TruncMonth
-from collections import defaultdict
+from datetime import datetime
+from functools import reduce
 # Create your views here.
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -108,49 +107,93 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 
     @action(methods=['GET'], detail=False)
-    def get_invoicing_per_year(self, *args, **kwargs):
+    def get_sum_invoicing_per_year(self, *args, **kwargs):
         company_id = self.request.query_params.get('company_id', None)
 
-        if not company_id:
-            return Response(data="Erro ao buscar empresa", status=status.HTTP_400_BAD_REQUEST)
+        try:
+            invoicings = InvoicingModel.objects.filter(company__id=company_id)
+            dados_por_ano = {}
 
-        try:  
-             
-            invoicings = InvoicingModel.objects.filter(company=company_id).order_by('-date')
-            results = invoicings.annotate(ano=ExtractYear('date')).values('ano').annotate(soma=Sum('value'))
-            dados = {f"{str({result['ano']})}": result['soma'] for result in results}
-            serializer = InvoicingSerializer(invoicings, many=True)
-            return Response(data=dados, status=status.HTTP_200_OK)
-            
+            for dado in invoicings:
+                data = str(dado.date)[:4]
+                if data not in dados_por_ano:
+                    dados_por_ano[data] = []
+                dados_por_ano[data].append({
+                    'id': dado.id,
+                    'date': dado.date,
+                    'value': dado.value
+                })
+            soma_ano = {}
+            for i in dados_por_ano:
+                soma = reduce(lambda acumulador, valores: valores['value'] + acumulador, dados_por_ano[i], 0)
+                soma_ano['ano_'+i] = {
+                    "valor_somado": soma
+                }
+            return Response(data=soma_ano, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={
-                "error": str(e)  
-            }, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Dados não encontrados.'}, status=status.HTTP_404_NOT_FOUND)
 
+    @action(methods=['GET'], detail=False)
+    def get_invoicing_per_year(self, *args, **kwargs):
+        company_id = self.request.query_params.get('company_id', None)
+        ano = self.request.query_params.get('ano', None)
+        try:
+            invoicings = InvoicingModel.objects.filter(company__id=company_id)
+            dados_por_ano = {}
+
+            for dado in invoicings:
+                data = str(dado.date)[:4]
+                if data not in dados_por_ano:
+                    dados_por_ano[data] = []
+                dados_por_ano[data].append({
+                    'id': dado.id,
+                    'date': dado.date,
+                    'value': dado.value
+                })
+            
+            return Response(data=dados_por_ano[ano], status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Dados não encontrados.'}, status=status.HTTP_404_NOT_FOUND)
         
         
 
     @action(methods=['GET'], detail=False)
     def get_quarterly_billing(self, *args, **kwargs):
         company_id = self.request.query_params.get('company_id', None)
-
-        if not company_id:
-            return Response(data="Erro ao buscar empresa", status=status.HTTP_400_BAD_REQUEST)
-
+        ano = self.request.query_params.get('ano', None)
         try:
-            invoicings = InvoicingModel.objects.filter(company=company_id).order_by('-date')
-            datas = defaultdict(lambda: {"value": 0.0})
+            invoicings = InvoicingModel.objects.filter(company__id=company_id).order_by('-date')
+            dados_por_ano = {}
 
-            for inv in invoicings:
-                data = str(inv.date)[0:7]
-                datas[data]["value"] += inv.value
-            resultado = dict(datas)
-
-            serializer = InvoicingSerializer(invoicings, many=True)
-            return Response(data=resultado, status=status.HTTP_200_OK)
-
+            for dado in invoicings:
+                data = str(dado.date)[:4]
+                if data not in dados_por_ano:
+                    dados_por_ano[data] = []
+                dados_por_ano[data].append({
+                    'id': dado.id,
+                    'date': dado.date,
+                    'value': dado.value
+                })
+            ano_de_retorno = dados_por_ano[ano]
+            por_mes = {}
+            for dado in ano_de_retorno:
+                data = str(dado['date'])[:7]
+                if data not in por_mes:
+                    por_mes[data] = []
+                por_mes[data].append({
+                    'id': dado['id'],
+                    'date': dado['date'],
+                    'value': dado['value']
+                })
+            soma_mes = {}
+            for i in por_mes:
+                soma = reduce(lambda acumulador, valores: valores['value'] + acumulador, por_mes[i], 0)
+                soma_mes['ano_'+i.replace('-','_')] = {
+                    "valor_somado": soma
+                } 
+            return Response(data=soma_mes, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response(data={
-                "message": "Empresa não encontrada ou erro na consulta.",
-                "error": str(e)
-            }, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Dados não encontrados.'}, status=status.HTTP_404_NOT_FOUND)
