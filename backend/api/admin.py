@@ -3,7 +3,7 @@ from .models import *
 # Register your models here.
 
 class CAdmin(admin.ModelAdmin):
-    list_display = ('id','cnpj',)
+    list_display = ('id','cnpj','razao_social')
 
 class Indmin(admin.ModelAdmin):
     list_display = ('id','company','value')

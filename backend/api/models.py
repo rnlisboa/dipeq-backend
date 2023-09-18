@@ -17,12 +17,12 @@ class CompanyModel(models.Model):
     n_estagiario = models.IntegerField()
     n_socios = models.IntegerField()
     nome_socios = models.TextField(null=True)
-    website = models.CharField(max_length=50,null=True)
-    instagram = models.CharField(max_length=50,null=True)
-    facebook = models.CharField(max_length=50,null=True)
-    twitter = models.CharField(max_length=50,null=True)
-    linkedin = models.CharField(max_length=50,null=True)
-    email = models.EmailField(max_length=50,null=True)
+    website = models.CharField(max_length=50,null=True, blank=True)
+    instagram = models.CharField(max_length=50,null=True, blank=True)
+    facebook = models.CharField(max_length=50,null=True, blank=True)
+    twitter = models.CharField(max_length=50,null=True, blank=True)
+    linkedin = models.CharField(max_length=50,null=True, blank=True)
+    email = models.EmailField(max_length=50,null=True, blank=True)
 
 class InvoicingModel(models.Model):
     company = models.ForeignKey(CompanyModel, on_delete=models.CASCADE)
