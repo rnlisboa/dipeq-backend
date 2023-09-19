@@ -39,26 +39,29 @@
 .table {
     border-collapse: collapse;
     width: 100%;
-    max-width: 720px; // Ou o valor desejado
-    margin-top: 1rem; // Ou o espaçamento desejado
+    max-width: 720px; 
+    margin-top: 1rem; 
 }
 
 .table th,
 .table td {
     padding: 0.5rem;
     text-align: left;
-    border-bottom: 1px solid #ddd; // Linhas horizontais
+    border-bottom: 1px solid #ddd; 
 }
 
 .table th {
-    background-color: #f2f2f2; // Cor de fundo do cabeçalho
+    background-color: #f2f2f2;
     font-weight: bold;
 }
 
 .table tr {
-    background-color: #f5f5f570; // Cor de fundo para linhas ímpares
+    background-color: #f5f5f570;
 }
-/* Estilo para linhas ímpares (opcional) */
+.table tr a {
+    cursor: pointer;
+}
+
 .table tr:nth-child(odd) {
-    background-color: #f5f5f5; // Cor de fundo para linhas ímpares
+    background-color: #f5f5f5; 
 }

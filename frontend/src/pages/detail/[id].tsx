@@ -83,7 +83,7 @@ export default function Category() {
                     <h1>
                         Detalhes da empresa
                     </h1>
-                   
+
                     {
                         company && <div className={styles.companyDetails}>
                             <div className={styles.detail}>
@@ -157,21 +157,24 @@ export default function Category() {
                             </div>
                         </div>
                     }
-                    
+
                     <div className={styles.selectContainer}>
-                    <select
-                        className={styles.selectAno}
-                        value={anoSelecionado}
-                        onChange={(e) => setAnoSelecionado(Number(e.target.value))}
-                    >
-                        {[2023, 2022, 2021].map((ano) => (
-                            <option key={ano} value={ano} >
-                                {ano}
-                            </option>
-                        ))}
-                    </select>
+                        {invoicing.length > 0 && <select
+                            className={styles.selectAno}
+                            value={anoSelecionado}
+                            onChange={(e) => setAnoSelecionado(Number(e.target.value))}
+                        >
+                            {[2023, 2022, 2021].map((ano) => (
+                                <option key={ano} value={ano} >
+                                    {ano}
+                                </option>
+                            ))}
+                        </select>}
                     </div>
-                    <BarChart valores={invoicing}/>
+                    {
+                        invoicing.length > 0 && <BarChart valores={invoicing} />
+                    }
+
 
                 </main>
             </div>
