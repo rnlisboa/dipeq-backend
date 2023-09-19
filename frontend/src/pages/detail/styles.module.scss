@@ -1,0 +1,84 @@
+/* styles.module.scss */
+
+.container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem;
+  
+    h1 {
+      color: #74b86e;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  
+    .companyDetails {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+  
+      .detail {
+        background-color: #f8f8f8;
+        border: 1px solid #ddd;
+        padding: 1rem;
+        border-radius: 4px;
+  
+        h2 {
+          color: #333;
+          font-size: 1rem;
+          margin-bottom: 0.5rem;
+        }
+  
+        p {
+          font-size: 0.875rem;
+          color: #777;
+        }
+      }
+    }
+  }
+
+  /* styles.module.scss */
+
+.selectContainer {
+    margin-top: 2rem;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .selectAno {
+    appearance: none;
+    border: 2px solid #3498db;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 150px;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .selectAno:hover {
+    border-color: #2980b9;
+  }
+  
+  .selectAno::after {
+    content: "\f078"; /* Ícone da seta para baixo (Font Awesome) */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-family: FontAwesome;
+  }
+  
+  /* Estilo para opções do select */
+  .selectAno option {
+    background-color: #fff;
+    color: #333;
+  }
+  
+  .selectAno option:hover {
+    background-color: #3498db;
+    color: #fff;
+  }
+  

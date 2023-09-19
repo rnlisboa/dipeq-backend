@@ -7,7 +7,7 @@ import { AuthContext } from "../../contexts/authContext"
 
 export function Header() {
 
-    const { signOut } = useContext(AuthContext)
+    const {user, signOut } = useContext(AuthContext)
 
     return (
         <header className={styles.headerContainer}>
@@ -16,11 +16,13 @@ export function Header() {
                     <img src="https://dipeq.cnat.ifrn.edu.br/wp-content/uploads/2021/06/cropped-LOGO-DIPEQ.png" alt="logo-dipeq"/>
                 </Link>
 
+                <span className={styles.user}>{user ? "Olá, " + user.username : ""}</span>
                 <nav className={styles.menuNav}>
                     <Link href={"/company"} legacyBehavior>
                         Cadastrar empresa
                     </Link>
 
+                    
                   
 
                     <button onClick={signOut}>

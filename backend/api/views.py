@@ -112,6 +112,16 @@ class CompanyViewSet(viewsets.ModelViewSet):
                 return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         return Response({'errors': serializer.errors, 'message': 'Houveram erros de validação'}, status=status.HTTP_400_BAD_REQUEST)
     
+    @action(methods=['GET'], detail=False)
+    def get_company(self, *args, **kwargs):
+        company_id = self.request.query_params.get('company_id', None)
+        try:
+            company = self.queryset.get(pk=company_id)
+            serializer = self.serializer_class(company)
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Dados não encontrados.'}, status=status.HTTP_404_NOT_FOUND)
 
     @action(methods=['GET'], detail=False)
     def get_sum_invoicing_per_year(self, *args, **kwargs):

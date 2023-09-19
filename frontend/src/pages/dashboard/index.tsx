@@ -2,9 +2,10 @@ import { canSSRAuth } from "../utils/canSSRAuth"
 import Head from "next/head"
 import styles from "./styles.module.scss"
 import { FiRefreshCcw } from "react-icons/fi"
-import { Header } from "../../components/Header/"
+import { Header } from "../../components/Header"
 import { setupAPIClient } from "@/services/api"
 import { DadosFaturamentoProps } from "./services"
+import Link from "next/link"
 
 
 
@@ -89,7 +90,9 @@ export default function Dashboard({ dadosFaturamento, dadosTrimestre, dadosEmpre
                         <tbody>
                             {dadosEmpresas.map((item) => (
                                 <tr key={item.id}>
-                                    <td>{item.nome_fantasia}</td>
+                                    <Link href={`/detail/${item.id}`} legacyBehavior>
+                                        <td>{item.nome_fantasia}</td>
+                                    </Link>
                                     <td>{item.n_estagiario + item.n_func_clt + item.n_func_terc}</td>
                                 </tr>
                             ))}
@@ -97,7 +100,7 @@ export default function Dashboard({ dadosFaturamento, dadosTrimestre, dadosEmpre
                     </table>
                 </div>
 
-
+                
 
             </main>
         </>
