@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-j%*95r%ebo8a4*4q#91s&&kbie08jh!zut7k3aq=z$%c#uw6#n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'renanlisboa.pythonanywhere.com']
 
 
 
@@ -156,7 +156,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 STATIC_URL = 'static/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
+STATIC_ROOT = BASE_DIR / 'static'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
