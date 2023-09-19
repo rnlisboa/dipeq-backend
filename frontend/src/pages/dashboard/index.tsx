@@ -3,7 +3,7 @@ import Head from "next/head"
 import styles from "./styles.module.scss"
 import { FiRefreshCcw } from "react-icons/fi"
 import { Header } from "../../components/Header"
-import { setupAPIClient } from "@/services/api"
+import { setupAPIClient } from "@/services/service"
 import { DadosFaturamentoProps } from "./services"
 import Link from "next/link"
 
