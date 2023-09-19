@@ -1,3 +1,4 @@
+import React from "react"
 type ValorAnoProps = {
     map(arg0: (item: any) => JSX.Element): import("react").ReactNode
     ano: string,

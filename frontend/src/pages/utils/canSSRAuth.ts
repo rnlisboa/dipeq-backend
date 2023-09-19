@@ -1,3 +1,4 @@
+import React from "react";
 import { AuthTokenError } from "@/services/errors/authTokenError";
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
