@@ -4,7 +4,7 @@ import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult
 
 import { parseCookies, destroyCookie } from "nookies"
 
-export function canSSRAuth<P>(fn: GetServerSideProps<P>) {
+export default function canSSRAuth<P>(fn: GetServerSideProps<P>) {
     return async (context: GetServerSidePropsContext): Promise<GetServerSidePropsResult<P>> => {
         const cookies = parseCookies(context)
         const token = cookies['@nextauth.token']

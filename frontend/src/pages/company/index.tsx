@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import Head from "next/head";
 import { setupAPIClient } from "../../services/api"
 import { toast } from "react-toastify";
-import { canSSRAuth } from "../utils/canSSRAuth"
+import  canSSRAuth  from "../utils/canSSRAuth"
 
 export default function Category() {
     const [cnpj, setCnpj] = useState<string>('');
