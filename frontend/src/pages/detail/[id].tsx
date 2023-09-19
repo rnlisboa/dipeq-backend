@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./styles.module.scss"
 import { Header } from "@/components/Header";
 import Head from "next/head";
-import { setupAPIClient } from "../../services/service"
+import { setupAPIClient } from "../../services/api"
 import { toast } from "react-toastify";
 import  canSSRAuth  from "../utils/canSSRAuth"
 import { useRouter } from "next/router";
