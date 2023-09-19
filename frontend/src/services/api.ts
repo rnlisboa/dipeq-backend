@@ -7,7 +7,7 @@ export function setupAPIClient(context = undefined){
     let cookies = parseCookies(context);
 
     const api = axios.create({
-        baseURL: 'https://renanlisboa.pythonanywhere.com/api/',
+        baseURL: `${process.env.REACT_APP_API_URL}`,
         headers: {
             Authorization: `Bearer ${cookies['@nextauth.token']}`
         }
